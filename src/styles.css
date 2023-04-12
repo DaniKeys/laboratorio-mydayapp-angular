@@ -246,9 +246,15 @@ body {
 
 .todo-list li.completed label {
   color: #949494;
-  text-decoration: line-through;
 }
 
+.checked{
+  text-decoration: line-through!important;
+}
+
+.unChecked{
+  text-decoration: none!important;
+}
 .todo-list li .destroy {
   display: none;
   position: absolute;
