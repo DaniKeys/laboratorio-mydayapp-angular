@@ -6,12 +6,12 @@
       <input class="new-todo" placeholder="Type new todo" autofocus type="text"
       (keydown.enter)="sendValue()" [formControl]="newItem"/>
       <div>
-        <p [hidden]="!newItem.invalid">Campo requerido</p>
+        <p [hidden]="!newItem.invalid">No has escrito una tarea todavia</p>
       </div>
     </div>
   </header>
-  <div *ngIf="showTodolist" class="container todoapp-wrapper">
-    <app-todolist *ngFor="let item of items" [todos]="item"></app-todolist>
+  <div *ngIf="items.length>0" class="container todoapp-wrapper">
+    <app-todolist *ngFor="let item of items" [todos]="item" (deleteTodo)="deletedTodo($event)"></app-todolist>
     <footer class="footer">
       <!-- This should be `0 items left` by default -->
       <span class="todo-count"><strong>0</strong> item left</span>

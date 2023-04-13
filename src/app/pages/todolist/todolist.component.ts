@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { LocalStoragedService } from 'src/app/local-storaged/local-storaged.service';
 import { TodoModel } from 'src/app/models/todoModel';
 
@@ -10,24 +11,28 @@ import { TodoModel } from 'src/app/models/todoModel';
 export class TodolistComponent implements OnInit {
 
   listTodos: TodoModel[];
-  edit: boolean;
   completed: Record<string, boolean> = {};
+  edit: boolean;
+  sendId: string | null | undefined= "";
 
-  constructor(private localstorage: LocalStoragedService) {
+  constructor(private localstorage: LocalStoragedService,
+              private router : Router,
+              private route: ActivatedRoute) {
     this.listTodos = []
-    this.edit = false
+    this.edit= false
   }
 
   ngOnInit(): void {
   }
 
   @Input()
-  set todos(todo: string) {
-    this.listTodos.push({
-      title: todo,
-      completed: false
-    })
+  set todos(todo: TodoModel) {
+    this.listTodos.push(todo)
   }
+
+  @Output()
+  deleteTodo = new EventEmitter<string>();
+
 
   completedTodo(event: Event, index: number) {
     const checked = event.target as HTMLInputElement
@@ -36,7 +41,7 @@ export class TodolistComponent implements OnInit {
       this.completed = {
         checked: true
       }
-    } else if (!checked.checked) {
+    } else if (checked.checked===false) {
       this.listTodos[index].completed = false;
       this.completed = {
         unChecked: true
@@ -44,17 +49,23 @@ export class TodolistComponent implements OnInit {
     }
   }
 
-  destroy(index: number) {
-    this.listTodos.splice(index, 1)
-    let listStoraged = this.localstorage.getItem(LocalStoragedService.INPUT_TODOS);
-    listStoraged.splice(index, 1);
-    this.localstorage.setItem(LocalStoragedService.INPUT_TODOS,listStoraged);
+  destroy(id?: string | null) {
+    if(id){
+    this.deleteTodo.emit(id)
+    }
   }
 
-  editTodo() {
+
+  editTodo(id?: string | null) {
     this.edit = true;
+    if(id ){
+      this.router.navigateByUrl(`/home/list/edit?id=${id}`);
+    }
   }
 
+  listEdit(listUpdate: TodoModel[]){
+      this.listTodos = listUpdate
+  }
 
 
 }

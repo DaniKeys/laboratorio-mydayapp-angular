@@ -3,16 +3,13 @@
 
   <section class="main">
     <ul class="todo-list">
-      <li class="completed">
-        <div class="view" *ngFor="let todo of listTodos; index as i" >
-          <input class="toggle" type="checkbox" (change)="completedTodo($event,i)"/>
-          <label  (dblclick)="editTodo()" [ngClass]="completed">{{todo.title}}</label>
-          <button class="destroy" (click)="destroy(i)"></button>
+      <li class="completed" *ngFor="let todo of listTodos; index as i">
+        <div class="view">
+          <input class="toggle" type="checkbox" (change)="completedTodo($event, i)" />
+          <label (dblclick)="editTodo(todo?.id)"[ngClass]="completed">{{ todo.title }}</label>
+          <button class="destroy" (click)="destroy(todo?.id)"></button>
         </div>
-        <input class="edit" value="Learn JavaScript" />
-      </li>
-      <li *ngIf="edit" class="editing">
-        <app-todoedit></app-todoedit>
+        <app-todoedit *ngIf="edit" (listUpdate)="listEdit($event)"></app-todoedit>
       </li>
     </ul>
   </section>

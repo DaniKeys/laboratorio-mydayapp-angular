@@ -1,7 +1,7 @@
 export interface TodoModel {
 
-  id?: string,
-  title: string,
-  completed?: boolean
+  id?: string | null,
+  title?: string | null,
+  completed?: boolean | null
 
 }
