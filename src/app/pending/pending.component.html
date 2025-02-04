@@ -1,0 +1,9 @@
+<section class="main">
+  <ul class="todo-list">
+    <li class="completed" *ngFor="let todo of getPending; index as i">
+      <div class="view">
+        <label>{{ todo.title }}</label>
+      </div>
+    </li>
+  </ul>
+</section>

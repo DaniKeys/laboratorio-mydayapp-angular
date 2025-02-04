@@ -6,7 +6,6 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { LocalStoragedService } from 'src/app/local-storaged/local-storaged.service';
 import { TodoModel } from 'src/app/models/todoModel';
-import { PersistentService } from 'src/app/persistent/persistentService';
 
 @Component({
   selector: 'app-todoedit',
@@ -23,7 +22,10 @@ export class TodoeditComponent implements OnInit {
   @Output()
   listUpdate = new EventEmitter<TodoModel[]>();
 
-  constructor(private persistentService: PersistentService,
+  @Output()
+  edit = new EventEmitter<boolean>();
+
+  constructor(
     private route: ActivatedRoute,
     private router: Router,
     private localStoragedService: LocalStoragedService) {
@@ -37,7 +39,10 @@ export class TodoeditComponent implements OnInit {
       this.idTodo = params['id'];
       this.list = this.localStoragedService.getItem(LocalStoragedService.INPUT_TODOS);
       let todo = this.list.filter(todo => todo.id === this.idTodo)[0]
-      this.editTitle.setValue(todo.title as string);
+      if (todo) {
+        let title = todo.title as string;
+        this.editTitle.setValue(title);
+      }
     });
   }
 
@@ -47,6 +52,7 @@ export class TodoeditComponent implements OnInit {
     this.list[indice].title = this.editTitle.value;
     this.localStoragedService.setItem(LocalStoragedService.INPUT_TODOS, this.list)
     this.listUpdate.emit(this.list)
-    this.router.navigate([''])
+    this.router.navigate(['home/list'])
+    this.edit.emit(false)
   }
 }

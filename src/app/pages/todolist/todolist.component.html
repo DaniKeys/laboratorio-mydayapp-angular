@@ -6,10 +6,11 @@
       <li class="completed" *ngFor="let todo of listTodos; index as i">
         <div class="view">
           <input class="toggle" type="checkbox" (change)="completedTodo($event, i)" />
-          <label (dblclick)="editTodo(todo?.id)"[ngClass]="completed">{{ todo.title }}</label>
+          <label  (dblclick)="editTodo(todo?.id)"[ngClass]="completed">{{ todo.title }}</label>
           <button class="destroy" (click)="destroy(todo?.id)"></button>
         </div>
-        <app-todoedit *ngIf="edit" (listUpdate)="listEdit($event)"></app-todoedit>
+        <app-todoedit *ngIf="edit" (listUpdate)="listEdit($event)" (edit)="close($event)"></app-todoedit>
+        <app-pending></app-pending>
       </li>
     </ul>
   </section>

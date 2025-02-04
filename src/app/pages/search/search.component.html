@@ -1,0 +1,7 @@
+<div>
+  <input class="new-todo" placeholder="Type new todo" autofocus type="text"
+  (keydown.enter)="sendValue()" [formControl]="newItem"/>
+  <div>
+    <p [hidden]="!newItem.invalid">No has escrito una tarea todavia</p>
+  </div>
+</div>
